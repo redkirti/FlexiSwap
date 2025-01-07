@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Atomic Swap</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+
+    <script src='/web3.min.js'></script>
+    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <h1 class="centeralign">Atomic Swap</h1>
+    <br >
+    <div class="centeralign">
+        <h4>Select Chain</h4>
+        <button type="button" class="btn btn-primary" id="ONTBut" onclick="hideElement('ETH'); showElement('ONT');">ONT</button>
+        <button type="button" class="btn btn-primary" id="ETHBut" onclick="hideElement('ONT'); showElement('ETH');">ETH</button>
+    </div>
+    <hr>
+    <div class="centeralign setmargin" id = "ONT">
+
+        <!-- ORDER STATUS -->
+        <div>
+            <label for="hashlock">Enter hash: </label>
+            <input type="text" name="hashlock" id="hash5">
+            <button onclick="printOrderListOnt(document.getElementById('hash5').value);">Get Order Details</button>
+            <div id="orderListOnt"></div>
+            <br>
+            <div id="bidtimer1"></div>
+            <br>
+            <div hidden id="selectedBidsDiv">
+                <h2>All Selected Bids Details</h2>
+                <table id="selectedBidsTable">
+                    <thead>
+                        <th>Buyer Ont Address</th>
+                        <th>Buyer ETH Address</th>
+                        <th>Locked Amount</th>
+                        <th>New hashlock</th>
+                    </thead>
+                </table>
+            </div>
+            <br>
+        </div>
+        <hr>
+
+        <!-- BUTTONS TO SELECT STEPS -->
+        <div>
+            <button class="mnbt" id="lt" onclick="showhide('lt');">Lock Tokens</button>
+            <button class="mnbt" id="co" onclick="showhide('co');">Claim ONT</button>
+            <button class="mnbt" id="ro" onclick="showhide('ro');">Refund ONT</button>
+        </div>
+        <hr>
+        <!-- LOCKING TOKENS -->
+        <div name="block" id="lt1">
+            <label for="hashlock">Enter hash: </label>
+            <input type="text" name="hashlock" id="hash1"><br><br>
+            <label for="secret3">Enter secret of the hash: </label>
+            <input type="text" name="secret3" id="secret3"><br><br>
+            <label for="amountOnt">Enter ONT tokens to exchange: </label>
+            <input type="text" name="amountOnt" id="amountOnt"><br><br>
+            <label for="hashlocks">Enter hashlocks (comma separated)</label>
+            <input type="text" name="hashlocks" id="hashlocks"><br><br>
+            <label for="buyerOntAddresses">Enter Buyer ONT Addresses (comma separated)</label>
+            <input type="text" name="buyerOntAddresses" id="buyerOntAddresses"><br><br>
+            <label for="buyerEthAddresses">Enter Buyer ETH Addresses (comma separated)</label>
+            <input type="text" name="buyerEthAddresses" id="buyerEthAddresses"><br><br>
+            <label for="amounts">Enter amount split (comma separated)</label>
+            <input type="text" name="amounts" id="amounts"><br><br>
+            <button onclick="lockAndSet(document.getElementById('hash1').value, document.getElementById('secret3').value, document.getElementById('hashlocks').value, document.getElementById('buyerOntAddresses').value, document.getElementById('buyerEthAddresses').value, document.getElementById('amounts').value, document.getElementById('amountOnt').value);">Lock and Set</button>
+        </div>
+
+        <!-- CLAIM ONT TOKENS BY 2ND PARTY -->
+        <div name="block" id="co1">
+            <label for="hashlock">Enter hash: </label>
+            <input type="text" name="hashlock" id="hash3"><br><br>
+            <label for="secret">Enter Secret: </label>
+            <input type="text" name="secret" id="secret1"><br><br>
+            <button onclick="claimOnt(document.getElementById('hash3').value, document.getElementById('secret1').value);">Claim ONT</button>
+        </div>
+
+        <!-- REFUND ONT TOKENS BY INTITIATOR -->
+        <div name="block" id="ro1">
+            <label for="hashlock">Enter hash: </label>
+            <input type="text" name="hashlock" id="hash4"><br><br>
+            <button onclick="refundOnt(document.getElementById('hash4').value);">Refund ONT</button>
+        </div>
+        <hr>
+    </div>
+    <!-- ==================================================================================================================================== -->
+    <div class="centeralign setmargin" id = "ETH" >
+        <!-- ORDER STATUS -->
+        <div>
+            <label for="hashlock">Enter hash: </label>
+            <input type="text" name="hashlock" id="hash6">
+            <button onclick="printOrderListEth(document.getElementById('hash6').value);">Get Order Details</button>
+            <div id="orderListEth"></div>  
+            <br>
+            <div id="bidtimer2"></div>
+            <br>
+            <div hidden id="bidDetailsDiv">
+                <h2>All Bids Details</h2>
+                <table id = "bidDetailsTable">
+                </table>
+            </div>
+            <br>
+        </div>
+        <hr>
+
+        <!-- BUTTONS TO SELECT STEPS -->
+        <div>
+            <button class="mnbt2" id="io" onclick="showhide2('io');">Initiate Order</button>
+            <button class="mnbt2" id="b" onclick="showhide2('b');">Bid</button>
+            <button class="mnbt2" id="le" onclick="showhide2('le');">Lock ETH</button>
+            <button class="mnbt2" id="ce" onclick="showhide2('ce');">Claim ETH</button>
+            <button class="mnbt2" id="re" onclick="showhide2('re');">Refund ETH</button>
+        </div>
+
+        <!-- INITIATE ORDER -->
+        <div name="block2" id="io1">
+            <label for="hashlock">Enter hash: </label>
+            <input type="text" name="hashlock" id="hash11"><br><br>
+            <label for="initiatorOntAddress">Enter Initiator ONT Address: </label>
+            <input type="text" name="initiatorOntAddress" id="initiatorOntAddress"><br><br>
+            <label for="amountOnt4">Enter Amount ONT: </label>
+            <input type="text" name="amountOnt4" id="amountOnt4"><br><br>
+            <button onclick="getBidTimeLock(document.getElementById('hash11').value, document.getElementById('initiatorOntAddress').value, document.getElementById('amountOnt4').value, 'bidtimer1');">Initiate Order</button>
+        </div>
+        <!-- Sending to database will look at this later -->
+        <iframe name="votar" style="display:none;"></iframe>
+        <form id="todb" action="/txns" method="post" target="votar" style="display:none;">
+            <input type="hidden" name="hashlock" id="hash12"><br><br>
+            <!-- <input type="hidden" name="amountOnt" id="amountOnt3"><br><br>
+            <input type="hidden" name="bidTimelock" id="bidTimelock3"><br><br> -->
+            <input style="display: none;" type="submit" value="Send to Database">
+        </form> 
+
+        <!-- BIDDING -->
+        <div name="block2" id="b1">
+            <label for="hashlock">Enter hash: </label>
+            <input type="text" name="hashlock" id="hash7"><br><br>
+            <label for="rate">Enter Exchange Rate: </label>
+            <input type="text" name="rate" id="rate"><br><br>
+            <label for="maxEth">Enter Maximum ETH to exchange: </label>
+            <input type="text" name="maxEth" id="maxEth"><br><br>
+            <label for="buyerOntAddress">Enter your ONT Address:</label>
+            <input type="text" name="buyerOntAddress" id="buyerOntAddress2"><br><br>
+            <button onclick="bid(document.getElementById('hash7').value, document.getElementById('buyerOntAddress2').value, document.getElementById('rate').value, document.getElementById('maxEth').value);">Bid</button>
+        </div>
+
+        <!-- LOCKING ETHEREUM -->
+        <div name="block2" id="le1">
+            <label for="hashlock">Enter main hash: </label>
+            <input type="text" name="hashlock" id="hash8"><br><br>
+            <label for="hashlock">Enter token hash: </label>
+            <input type="text" name="hashlock" id="tokenhash"><br><br>
+            <label for="amountEth">ETH to lock:  </label>
+            <input type="text" name="amountEth" id="amountEth"><br><br>
+            <button onclick="lockEth(document.getElementById('hash8').value, document.getElementById('tokenhash').value, document.getElementById('amountEth').value);">Lock ETH</button>
+        </div>
+ 
+        <!-- CLAIM ETH TOKENS BY 2ND PARTY -->
+        <div name="block2" id="ce1">
+            <label for="hashlock">Enter hash: </label>
+            <input type="text" name="hashlock" id="hash9"><br><br>
+            <label for="buyerEthAddresses">Enter Buyer ETH address whose bid clubbed: </label>
+            <input type="text" name="buyerEthAddresses" id="buyerEthAddresses2"><br><br>
+            <label for="secret">Enter the Secrets: </label>
+            <input type="text" name="secret" id="secret2"><br><br>
+            <button onclick="claimEth(document.getElementById('hash9').value, document.getElementById('buyerEthAddresses2').value,document.getElementById('secret2').value);">Claim ETH</button>
+        </div>
+
+
+        <!-- REFUND ETH TOKENS BY INTITIATOR -->
+        <div name="block2" id="re1">
+            <label for="hashlock">Enter hash: </label>
+            <input type="text" name="hashlock" id="hash10"><br><br>
+            <button onclick="refundEth(document.getElementById('hash10').value);">Refund ETH</button>
+        </div>
+        <hr>
+    </div>
+    <div class="setmargin">
+        Status: <span id="status">Loading...</span>
+    </div>
+    
+
+    <script src="/script.js"></script>
+</body>
+
+</html>

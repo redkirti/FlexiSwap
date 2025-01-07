@@ -1,0 +1,37 @@
+<html lang="en">
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <meta http-equiv="refresh" content="10">
+    <title><%= title %></title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <script src='/web3.min.js'></script>
+    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+  <div class="centeralign setmargin">
+    <h1><strong>Transactions</strong></h1>
+    <br>
+
+    <% if (txns.length > 0) { %>
+    <table>
+        <tr><th>Hash</th><th>Amount ONT Locked</th><th>Bid Time</th></tr>
+      <% txns.forEach(txn => { %>
+        <tr>
+        <td><%= txn.hashlock %></td>
+        <%  %>
+        <td><%= txn.amountOnt %></td>
+        <td><%= txn.bidTimelock %></td>
+        </tr>
+      <% }) %>
+    </table>
+    <% } else { %>
+      <p>There are no transactions to display...</p>
+    <% } %>
+  </div>
+</body>
+</html>

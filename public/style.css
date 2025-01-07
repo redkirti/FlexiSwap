@@ -1,0 +1,50 @@
+.netbut {
+    background-color: black !important;
+  }
+.centeralign{
+    text-align:center;
+}
+.setmargin{
+    margin-left: 2%;
+    margin-right: 2%;
+}
+.mnbt {
+    display: inline;
+    margin: 10px 0;
+    padding: 10px;
+    width: 24%;
+}
+.mnbt2 {
+    display: inline;
+    margin: 10px 0;
+    padding: 10px;
+    width: 19%;
+}
+.mytext {
+    width: 300px;
+}
+
+body{
+    background-image: url('/background.jpg');
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+}
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+.pd{
+    padding: 8px;
+}
+
+tr:nth-child(even) {
+    background-color: #dddddd;
+}
